@@ -1,0 +1,50 @@
+CREATE DATABASE pruebafinal;
+USE pruebafinal;
+
+CREATE TABLE usuarios( username    varchar(6),
+		       clave       varchar(12) NOT NULL,
+		       nombre      varchar(20) NOT NULL,
+		       apellidos   varchar(40) NOT NULL,
+		       telefonocon int(9) NOT NULL,
+		       CONSTRAINT PK_USERNAME PRIMARY KEY(username),
+		       CONSTRAINT CHK_USERNAME_MINUSCULAS
+		       CHECK(username like binary lower(username)),
+                       CONSTRAINT CHK_CLAVE_ENTRE_6_12
+		       CHECK(LENGTH(clave)>=6),
+		       CONSTRAINT CHK_USERNAME_CARACTERS
+                       CHECK(username REGEXP '^[[:alpha:]]+$'),
+		       CONSTRAINT CHK_TELEFONOCON CHECK(
+		       LENGTH(telefonoCon) = 9 ));
+		       
+CREATE TABLE mascotas( id int AUTO_INCREMENT,
+                       nombre varchar(20) NOT NULL,
+                       tipo varchar(40) NOT NULL,
+                       precio numeric NOT NULL,
+                       CONSTRAINT PK_ID PRIMARY KEY(id));
+
+
+CREATE TABLE comprador(dni varchar(10),
+		       nombre varchar(20) NOT NULL,
+                       apellido varchar(40) NOT NULL,
+                       direccion varchar(100) NOT NULL,
+                       localidad varchar(40) NOT NULL,
+		       email varchar(150) NOT NULL,
+                       telefonoconc numeric(9) NOT NULL,
+		       CONSTRAINT PK_DNI_C PRIMARY KEY(dni),
+		       CONSTRAINT CHK_NOMBRE CHECK(
+		       nombre REGEXP '^[[:alpha:]]+$'),
+		       CONSTRAINT CHK_APELLIDO CHECK(
+		       apellido REGEXP '^[[:alpha:]]+$'),
+		       CONSTRAINT CHK_TELEFONOCONC CHECK(
+		       LENGTH(telefonoConC) = 9 ),
+		       CONSTRAINT CHK_EMAIL CHECK(
+                       email like '%@%.%'));
+
+CREATE TABLE ventas(codigoventa int AUTO_INCREMENT,
+                    dnic varchar(10),
+                    idmascota int,
+		    fechaventa varchar(20),
+	            CONSTRAINT PK_CODIGO PRIMARY KEY(codigoVenta),
+                    CONSTRAINT FK_DNIC FOREIGN KEY (dnic) REFERENCES comprador(dni) ON DELETE CASCADE ON UPDATE CASCADE,
+                    CONSTRAINT FK_ID_MASCOTAS FOREIGN KEY (idmascota) REFERENCES mascotas(id)ON DELETE CASCADE ON UPDATE CASCADE);
+
